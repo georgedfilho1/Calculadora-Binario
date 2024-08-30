@@ -1,34 +1,126 @@
+/**
+
+ * Criado em 28 de Agosto 2024
+ * Autor: George Pessoa 
+ * Revisões de código:
+ *     Questão 1 - 28/08/2024 17;30
+ *     Questão 2 - 29/08/2024 19:00
+ *     Questão 3 - 28/08/2024 16:30
+
+**/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-void decimalParaBinario(int num) {
-    printf("Convertendo %d para base 2:\n", num);
-    int binario[32];
+void decToBinary(int n);
+void decToOctal(int n);
+void decToHex(int n);
+void decToBCD(int n);
+void decToComplement2(int n);
+void decToFloat(double n);
+void decToDouble(double n);
+
+int main() {
+    int option;
+    int num;
+    double realNum;
+
+    do {
+        printf("\nCalculadora Programador Didática\n");
+        printf("Escolha a conversão desejada:\n");
+        printf("1. Base 10 para Base 2\n");
+        printf("2. Base 10 para Base 8\n");
+        printf("3. Base 10 para Base 16\n");
+        printf("4. Base 10 para Código BCD\n");
+        printf("5. Base 10 para Base com Sinal (Complemento a 2)\n");
+        printf("6. Real em Decimal para Float\n");
+        printf("7. Real em Decimal para Double\n");
+        printf("8. Sair\n");
+        printf("Opção: ");
+        scanf("%d", &option);
+
+        switch(option) {
+            case 1:
+                printf("Digite um número inteiro em base 10: ");
+                scanf("%d", &num);
+                decToBinary(num);
+                break;
+            case 2:
+                printf("Digite um número inteiro em base 10: ");
+                scanf("%d", &num);
+                decToOctal(num);
+                break;
+            case 3:
+                printf("Digite um número inteiro em base 10: ");
+                scanf("%d", &num);
+                decToHex(num);
+                break;
+            case 4:
+                printf("Digite um número inteiro em base 10: ");
+                scanf("%d", &num);
+                decToBCD(num);
+                break;
+            case 5:
+                printf("Digite um número inteiro em base 10: ");
+                scanf("%d", &num);
+                decToComplement2(num);
+                break;
+            case 6:
+                printf("Digite um número real: ");
+                scanf("%lf", &realNum);
+                decToFloat(realNum);
+                break;
+            case 7:
+                printf("Digite um número real: ");
+                scanf("%lf", &realNum);
+                decToDouble(realNum);
+                break;
+            case 8:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida!\n");
+        }
+    } while(option != 8);
+
+    return 0;
+}
+
+void decToBinary(int n) {
+    int binary[32];
     int i = 0;
-    while(num > 0) {
-        binario[i] = num % 2;
-        printf("Passo %d: %d %% 2 = %d, Quociente = %d\n", i + 1, num, binario[i], num / 2);
-        num = num / 2;
+
+    printf("Convertendo %d para binário \n", n);
+
+    while(n > 0) {
+        binary[i] = n % 2;
+        printf("%d / 2 = %d, Resto = %d\n", n, n / 2, binary[i]);
+        n = n / 2;
         i++;
     }
+
     printf("Resultado em binário: ");
     for(int j = i - 1; j >= 0; j--) {
-        printf("%d", binario[j]);
+        printf("%d", binary[j]);
     }
     printf("\n");
 }
 
-void decimalParaOctal(int num) {
-    printf("Convertendo %d para base 8:\n", num);
+
+void decToOctal(int n) {
     int octal[32];
     int i = 0;
-    while(num > 0) {
-        octal[i] = num % 8;
-        printf("Passo %d: %d %% 8 = %d, Quociente = %d\n", i + 1, num, octal[i], num / 8);
-        num = num / 8;
+
+    printf("Convertendo %d para octal \n", n);
+
+    while(n > 0) {
+        octal[i] = n % 8;
+        printf("%d / 8 = %d, Resto = %d\n", n, n / 8, octal[i]);
+        n = n / 8;
         i++;
     }
+
     printf("Resultado em octal: ");
     for(int j = i - 1; j >= 0; j--) {
         printf("%d", octal[j]);
@@ -36,43 +128,46 @@ void decimalParaOctal(int num) {
     printf("\n");
 }
 
-void decimalParaHexadecimal(int num) {
-    printf("Convertendo %d para base 16:\n", num);
-    char hexadecimal[32];
+void decToHex(int n) {
+    char hex[32];
     int i = 0;
-    while(num > 0) {
-        int temp = num % 16;
-        if(temp < 10) {
-            hexadecimal[i] = temp + 48; 
-        } else {
-            hexadecimal[i] = temp + 55; 
-        }
-        printf("Passo %d: %d %% 16 = %d (%c), Quociente = %d\n", i + 1, num, temp, hexadecimal[i], num / 16);
-        num = num / 16;
+
+    printf("Convertendo %d para hexadecimal \n", n);
+
+    while(n > 0) {
+        int temp = n % 16;
+
+        if(temp < 10)
+            hex[i] = temp + 48;
+        else
+            hex[i] = temp + 55;
+
+        printf("%d / 16 = %d, Resto = %c\n", n, n / 16, hex[i]);
+        n = n / 16;
         i++;
     }
+
     printf("Resultado em hexadecimal: ");
     for(int j = i - 1; j >= 0; j--) {
-        printf("%c", hexadecimal[j]);
+        printf("%c", hex[j]);
     }
     printf("\n");
 }
 
-void decimalParaBCD(int num) {
-    printf("Convertendo %d para BCD:\n", num);
-    int digito, i = 0;
-    while(num > 0) {
-        digito = num % 10;
-        printf("Dígito %d: %d\n", i + 1, digito);
-        printf("BCD: ");
-        for(int j = 3; j >= 0; j--) {
-            printf("%d", (digito >> j) & 1);
+void decToBCD(int n) {
+    printf("Convertendo %d para BCD \n", n);
+
+    while(n > 0) {
+        int digit = n % 10;
+        printf("Dígito: %d, BCD: ", digit);
+        for(int i = 3; i >= 0; i--) {
+            printf("%d", (digit >> i) & 1);
         }
         printf("\n");
-        num = num / 10;
-        i++;
+        n = n / 10;
     }
 }
+
 void decToComplement2(int n) {
     unsigned short complement = (unsigned short)n;
 
@@ -92,8 +187,9 @@ void decToComplement2(int n) {
         printf("\n");
     }
 }
+
 void decToFloat(double n) {
-    printf("Convertendo %f para formato float...\n", n);
+    printf("Convertendo %f para formato float \n", n);
 
     union {
         float f;
@@ -134,9 +230,8 @@ void decToFloat(double n) {
     printf("\n");
 }
 
-// Função para converter real em double
 void decToDouble(double n) {
-    printf("Convertendo %f para formato double...\n", n);
+    printf("Convertendo %f para formato double\n", n);
 
     union {
         double d;
@@ -175,26 +270,4 @@ void decToDouble(double n) {
         printf("%d", (value.parts.mantissa >> i) & 1);
     }
     printf("\n");
-}
-
-
-int main() {
-    int num;
-    printf("Digite um número em base 10: ");
-    scanf("%d", &num);
-    decimalParaBinario(num);
-    printf("\n");
-    decimalParaOctal(num);
-    printf("\n");
-    decimalParaHexadecimal(num);
-    printf("\n");
-    decimalParaBCD(num);
-    printf("\n");
-    decToComplement2(num);
-    printf("\n");
-    decToFloat(num);
-    printf("\n");
-    decToDouble(num);
-    printf("\n");
-    return 0;
 }
