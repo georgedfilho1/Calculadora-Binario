@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 void decimalParaBinario(int num) {
     printf("Convertendo %d para base 2:\n", num);
@@ -71,6 +73,25 @@ void decimalParaBCD(int num) {
         i++;
     }
 }
+void decToComplement2(int n) {
+    unsigned short complement = (unsigned short)n;
+
+    printf("Convertendo %d para complemento a 2 com 16 bits...\n", n);
+    printf("Binário sem sinal: ");
+    for(int i = 15; i >= 0; i--) {
+        printf("%d", (complement >> i) & 1);
+    }
+    printf("\n");
+
+    if (n < 0) {
+        complement = ~(-n) + 1;
+        printf("Complemento a 2: ");
+        for(int i = 15; i >= 0; i--) {
+            printf("%d", (complement >> i) & 1);
+        }
+        printf("\n");
+    }
+}
 
 int main() {
     int num;
@@ -83,6 +104,8 @@ int main() {
     decimalParaHexadecimal(num);
     printf("\n");
     decimalParaBCD(num);
+    printf("\n");
+    decToComplement2(num);
     printf("\n");
     return 0;
 }
